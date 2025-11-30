@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Details - Job Portal</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body onload="loadJobDetail()">
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="logo">Job Portal</div>
+
+        <div class="nav-links">
+            <a href="index.html" class="nav-link">Home</a>
+            <a href="jobs.html" class="nav-link">Jobs</a>
+            <a href="companies.html" class="nav-link">Companies</a>
+            <a href="saved-jobs.html" class="nav-link">Saved Jobs</a>
+            <a href="profile.html" class="nav-link">Profile</a>
+            <a href="#" class="nav-link" onclick="logout()">Logout</a>
+        </div>
+    </nav>
+
+    <!-- JOB DETAIL PAGE -->
+    <div class="page-container">
+        <div id="job-detail-content" class="card"></div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <p>© 2025 Job Portal. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

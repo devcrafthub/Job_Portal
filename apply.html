@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apply Job - Job Portal</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="logo">Job Portal</div>
+
+        <div class="nav-links">
+            <a href="index.html" class="nav-link">Home</a>
+            <a href="jobs.html" class="nav-link">Jobs</a>
+            <a href="companies.html" class="nav-link">Companies</a>
+            <a href="saved-jobs.html" class="nav-link">Saved Jobs</a>
+            <a href="profile.html" class="nav-link">Profile</a>
+            <a href="#" class="nav-link" onclick="logout()">Logout</a>
+        </div>
+    </nav>
+
+    <!-- APPLY FORM -->
+    <div class="page-container">
+
+        <div class="form-container">
+            <h2 style="text-align:center; margin-bottom:1rem;">Job Application</h2>
+
+            <div class="form-group">
+                <label class="form-label">Full Name</label>
+                <input type="text" id="apply-name" class="form-input">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Email</label>
+                <input type="email" id="apply-email" class="form-input">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Phone</label>
+                <input type="text" id="apply-phone" class="form-input">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Cover Letter</label>
+                <textarea id="apply-cover" class="form-textarea" placeholder="Write something about yourself..."></textarea>
+            </div>
+
+            <button class="btn" onclick="submitApplication()">Submit Application</button>
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+
+    <script>
+        function submitApplication() {
+            const user = JSON.parse(localStorage.getItem("loggedInUser"));
+            if (!user) {
+                alert("Please login first!");
+                window.location.href = "login.html";
+                return;
+            }
+
+            const name = document.getElementById("apply-name").value;
+            const email = document.getElementById("apply-email").value;
+            const phone = document.getElementById("apply-phone").value;
+            const cover = document.getElementById("apply-cover").value;
+            const jobId = JSON.parse(localStorage.getItem("currentJobId"));
+
+            if (!name || !email || !phone || !cover) {
+                alert("Please fill all fields!");
+                return;
+            }
+
+            if (!user.applications.includes(jobId)) {
+                user.applications.push(jobId);
+                localStorage.setItem("loggedInUser", JSON.stringify(user));
+
+                let users = JSON.parse(localStorage.getItem("users")) || [];
+                users = users.map(u => u.email === user.email ? user : u);
+                localStorage.setItem("users", JSON.stringify(users));
+
+                alert("Application submitted successfully!");
+                window.location.href = "jobs.html";
+            } else {
+                alert("You have already applied for this job!");
+            }
+        }
+    </script>
+
+</body>
+</html>

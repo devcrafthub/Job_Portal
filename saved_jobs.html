@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saved Jobs - Job Portal</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body onload="loadSavedJobs()">
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="logo">Job Portal</div>
+
+        <div class="nav-links">
+            <a href="index.html" class="nav-link">Home</a>
+            <a href="jobs.html" class="nav-link">Jobs</a>
+            <a href="companies.html" class="nav-link">Companies</a>
+            <a href="saved-jobs.html" class="nav-link active">Saved Jobs</a>
+            <a href="profile.html" class="nav-link">Profile</a>
+            <a href="#" class="nav-link" onclick="logout()">Logout</a>
+        </div>
+    </nav>
+
+    <!-- PAGE TITLE -->
+    <div class="page-container">
+        <h2 style="color:white; margin-bottom:1rem;">Saved Jobs</h2>
+
+        <div id="saved-job-list" class="card-grid"></div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <p>© 2025 Job Portal. All rights reserved.</p>
+    </footer>
+
+    <!-- MAIN SCRIPT -->
+    <script src="script.js"></script>
+
+    <!-- PAGE-SPECIFIC SCRIPT -->
+    <script>
+    function loadSavedJobs() {
+        const container = document.getElementById("saved-job-list");
+
+        try {
+            let user = JSON.parse(localStorage.getItem("loggedInUser"));
+            let jobs = JSON.parse(localStorage.getItem("jobs")) || [];
+
+            // If not logged in
+            if (!user) {
+                container.innerHTML = "<p>Please login to view saved jobs.</p>";
+                return;
+            }
+
+            // If no savedJobs property exists
+            if (!Array.isArray(user.savedJobs)) {
+                user.savedJobs = [];
+            }
+
+            // Filter only existing jobs
+            const saved = jobs.filter(job => user.savedJobs.includes(job.id));
+
+            if (saved.length === 0) {
+                container.innerHTML = "<p>No saved jobs found.</p>";
+                return;
+            }
+
+            container.innerHTML = saved.map(job => `
+                <div class="card">
+                    <h3>${job.title}</h3>
+                    <p>${job.company}</p>
+
+                    <button class="btn" onclick="openJob(${job.id})">View</button>
+                    <button class="btn btn-secondary" onclick="removeSavedJob(${job.id})">Remove</button>
+                </div>
+            `).join("");
+
+        } catch (error) {
+            container.innerHTML = "<p>Error loading saved jobs.</p>";
+            console.error("Saved Jobs Error:", error);
+        }
+    }
+</script>
+</body>
+</html>

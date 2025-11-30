@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Companies - Job Portal</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body onload="loadCompanies()">
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="logo">Job Portal</div>
+
+        <div class="nav-links">
+            <a href="index.html" class="nav-link">Home</a>
+            <a href="jobs.html" class="nav-link">Jobs</a>
+            <a href="companies.html" class="nav-link active">Companies</a>
+            <a href="saved-jobs.html" class="nav-link">Saved Jobs</a>
+            <a href="profile.html" class="nav-link">Profile</a>
+            <a href="#" class="nav-link" onclick="logout()">Logout</a>
+        </div>
+    </nav>
+
+    <!-- PAGE -->
+    <div class="page-container">
+        <h2 style="color:white; margin-bottom:1rem;">Hiring Companies</h2>
+
+        <div id="company-list" class="card-grid"></div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <p>© 2025 Job Portal. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+
+    <script>
+        function loadCompanies() {
+            const container = document.getElementById("company-list");
+            const jobs = JSON.parse(localStorage.getItem("jobs")) || [];
+
+            const uniqueCompanies = [...new Set(jobs.map(j => j.company))];
+
+            container.innerHTML = uniqueCompanies.map(company => `
+                <div class="card">
+                    <h3>${company}</h3>
+                    <p>Now Hiring</p>
+                    <button class="btn" onclick="window.location.href='jobs.html'">View Jobs</button>
+                </div>
+            `).join("");
+        }
+    </script>
+
+</body>
+</html>
